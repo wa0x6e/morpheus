@@ -1,3 +1,5 @@
+import http from 'node:http';
+import https from 'node:https';
 import type { Response } from 'express';
 
 const ERROR_CODES: Record<string, number> = {
@@ -27,3 +29,15 @@ export function rpcError(res: Response, e: Error | string, id: string | number) 
     id
   });
 }
+
+const agentOptions = { keepAlive: true };
+const httpAgent = new http.Agent(agentOptions);
+const httpsAgent = new https.Agent(agentOptions);
+
+function agent(url: string) {
+  return new URL(url).protocol === 'http:' ? httpAgent : httpsAgent;
+}
+
+export const fetchWithKeepAlive = (uri: any, options: any = {}) => {
+  return fetch(uri, { agent: agent(uri), ...options });
+};

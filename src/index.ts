@@ -6,6 +6,7 @@ import { initLogger, fallbackLogger } from '@snapshot-labs/snapshot-sentry';
 import { name, version } from '../package.json';
 import { rpcError } from './helpers/utils';
 import initMetrics from './helpers/metrics';
+import api from './api';
 
 const app = express();
 const PORT = process.env.PORT || 3005;
@@ -17,6 +18,7 @@ app.disable('x-powered-by');
 app.use(express.json({ limit: '4mb' }));
 app.use(cors({ maxAge: 86400 }));
 app.use(compression());
+app.use('/api', api);
 
 app.get('/', (req, res) => {
   const commit = process.env.COMMIT_HASH || '';
