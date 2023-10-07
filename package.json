@@ -1,0 +1,62 @@
+{
+  "name": "morpheus",
+  "version": "0.0.1",
+  "main": "index.js",
+  "repository": "wa0x6e/morpheus",
+  "license": "MIT",
+  "scripts": {
+    "lint": "eslint src/ test/ --ext .ts,.json",
+    "lint:fix": "yarn lint --fix",
+    "typecheck": "tsc --noEmit",
+    "build": "tsc",
+    "dev": "nodemon src/index.ts -e js,ts",
+    "start": "node dist/src/index.js",
+    "start:test": "dotenv -e test/.env.test yarn dev",
+    "test": "PORT=3003 start-server-and-test 'yarn start:test' 3003 'dotenv -e test/.env.test jest --runInBand'",
+    "test:unit": "dotenv -e test/.env.test jest test/unit/",
+    "test:e2e": "PORT=3003 start-server-and-test 'yarn start:test' 3003 'dotenv -e test/.env.test jest --runInBand --collectCoverage=false test/e2e/'"
+  },
+  "eslintConfig": {
+    "extends": "@snapshot-labs"
+  },
+  "engines": {
+    "node": "^18.0.0"
+  },
+  "prettier": "@snapshot-labs/prettier-config",
+  "dependencies": {
+    "@apollo/client": "^3.7.17",
+    "@snapshot-labs/snapshot-metrics": "^1.3.1",
+    "@snapshot-labs/snapshot-sentry": "^1.5.1",
+    "body-parser": "^1.20.2",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "graphql": "^16.7.1",
+    "node-fetch": "^2.7.0"
+  },
+  "devDependencies": {
+    "@snapshot-labs/eslint-config": "^0.1.0-beta.13",
+    "@snapshot-labs/prettier-config": "^0.1.0-beta.7",
+    "@types/compression": "^1.7.2",
+    "@types/cors": "^2.8.13",
+    "@types/express": "^4.17.17",
+    "@types/jest": "^29.5.3",
+    "@types/node": "^20.4.8",
+    "@types/node-fetch": "^2.6.4",
+    "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.60.1",
+    "dotenv-cli": "^7.2.1",
+    "eslint": "^8.47.0",
+    "eslint-plugin-prettier": "5",
+    "jest": "^29.6.2",
+    "jest-environment-node-single-context": "^29.1.0",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.1",
+    "start-server-and-test": "^2.0.0",
+    "supertest": "^6.3.3",
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}
