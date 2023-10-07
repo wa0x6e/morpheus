@@ -18,7 +18,7 @@ export default async function run() {
 
   hibernateSpaces(spacesToHibernate);
 
-  return '';
+  return spacesToHibernate;
 }
 
 async function fetchAllSpaces() {
@@ -32,8 +32,6 @@ async function fetchAllSpaces() {
     }
     spaces = spaces.concat(_spaces);
     page++;
-
-    break;
   }
 
   return spaces;
