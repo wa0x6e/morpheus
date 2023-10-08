@@ -2227,6 +2227,11 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
+croner@^7.0.2:
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/croner/-/croner-7.0.2.tgz#e0322c3b3cf594b5a64f90e43f2ee394bcb2897e"
+  integrity sha512-n/5YNW+9grGxfSMNonier4ohkks7QtB3HrNzadE+wPEeeB/C+DP7T4hwLQ2bb8rZz3iaQads/Sn6yUL0d+13rw==
+
 cross-fetch@^3.1.6:
   version "3.1.8"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.8.tgz#0327eba65fd68a7d119f8fb2bf9334a1a7956f82"

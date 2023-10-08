@@ -1,44 +1,53 @@
 import { RULES } from './rules';
 import { type Space, fetchSpaces } from '../../helpers/snapshot';
+import { paginate } from '../../helpers/utils';
+import { hibernateSpace, reactivateSpace } from './utils';
 
 type HibernateList = Record<string, Space[]>;
 
-export default async function run() {
-  let spaces = (await fetchAllSpaces()).filter(space => !space.hibernating);
+export async function check(spaces?: Space[] | Space) {
   const spacesToHibernate: HibernateList = {};
+  spaces ||= await fetchAllAwakeSpaces();
+  spaces = Array.isArray(spaces) ? spaces : [spaces];
 
-  for (const ruleName of Object.keys(RULES)) {
-    spacesToHibernate[ruleName] = await RULES[ruleName](spaces);
+  for (const [rule, processor] of Object.entries(RULES)) {
+    spacesToHibernate[rule] = await processor(spaces);
 
-    if (spacesToHibernate[ruleName].length > 0) {
-      const ids = spacesToHibernate[ruleName].map(space => space.id);
+    if (spacesToHibernate[rule].length > 0) {
+      const ids = spacesToHibernate[rule].map(space => space.id);
       spaces = spaces.filter(space => !ids.includes(space.id));
     }
   }
 
-  hibernateSpaces(spacesToHibernate);
-
-  return spacesToHibernate;
+  return {
+    count: Object.values(spacesToHibernate)
+      .map(list => list.length)
+      .reduce((a, b) => a + b, 0),
+    spaces: spacesToHibernate
+  };
 }
 
-async function fetchAllSpaces() {
-  let page = 1;
-  let spaces: Space[] = [];
-
-  while (true) {
-    const _spaces = await fetchSpaces(page);
-    if (_spaces.length === 0) {
-      break;
-    }
-    spaces = spaces.concat(_spaces);
-    page++;
+export async function reactivate(space: Space) {
+  const result = await check(space);
+  if (result.count > 0) {
+    return false;
   }
 
-  return spaces;
+  reactivateSpace(space);
+
+  return true;
 }
 
-async function hibernateSpaces(list: HibernateList) {
-  for (const ruleName of Object.keys(list)) {
-    // send a request to sequencer to hibernate the space
+export async function hibernate(spaces?: Space[]) {
+  spaces ||= Object.values((await check()).spaces).flat();
+
+  for (const space of spaces) {
+    hibernateSpace(space);
   }
+}
+
+async function fetchAllAwakeSpaces() {
+  const spaces: Space[] = await paginate(fetchSpaces);
+
+  return spaces.filter(space => !space.hibernating);
 }

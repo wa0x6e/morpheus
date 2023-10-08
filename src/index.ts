@@ -7,6 +7,7 @@ import { name, version } from '../package.json';
 import { rpcError } from './helpers/utils';
 import initMetrics from './helpers/metrics';
 import api from './api';
+import scheduleJob from './lib/hibernate/job';
 
 const app = express();
 const PORT = process.env.PORT || 3005;
@@ -28,6 +29,8 @@ app.get('/', (req, res) => {
     version: v
   });
 });
+
+scheduleJob();
 
 fallbackLogger(app);
 

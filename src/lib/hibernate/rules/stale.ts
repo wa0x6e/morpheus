@@ -14,7 +14,11 @@ export default async function process(spaces: Space[]) {
 }
 
 async function lastProposalEndedBefore(space: Space, timestamp: number) {
-  const lastProposal = await fetchLastProposal(space.id);
+  try {
+    const lastProposal = await fetchLastProposal(space.id);
 
-  return !lastProposal || lastProposal.end < timestamp;
+    return !lastProposal || lastProposal.end < timestamp;
+  } catch (e: any) {
+    return false;
+  }
 }

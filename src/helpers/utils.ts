@@ -30,6 +30,22 @@ export function rpcError(res: Response, e: Error | string, id: string | number) 
   });
 }
 
+export async function paginate(callback: (page: number) => Promise<unknown[]>) {
+  let page = 1;
+  let results: any = [];
+
+  while (true) {
+    const _results = await callback(page);
+    if (_results.length === 0) {
+      break;
+    }
+    results = results.concat(_results);
+    page++;
+  }
+
+  return results;
+}
+
 const agentOptions = { keepAlive: true };
 const httpAgent = new http.Agent(agentOptions);
 const httpsAgent = new https.Agent(agentOptions);

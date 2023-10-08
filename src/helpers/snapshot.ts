@@ -44,8 +44,8 @@ export type Space = {
 };
 
 const SPACE_QUERY = gql`
-  query Spaces($skip: Int, $perPage: Int) {
-    spaces(skip: $skip, first: $perPage) {
+  query Spaces($skip: Int, $perPage: Int, $id: String) {
+    spaces(skip: $skip, first: $perPage, id: $id) {
       id
       proposalsCount
       created_at
@@ -69,6 +69,19 @@ export async function fetchSpaces(page: number) {
   });
 
   return spaces || [];
+}
+
+export async function fetchSpace(id: string) {
+  const {
+    data: { spaces }
+  }: { data: { spaces: Space[] | null } } = await client.query({
+    query: SPACE_QUERY,
+    variables: {
+      id
+    }
+  });
+
+  return (spaces || [])[0];
 }
 
 export type Proposal = {
