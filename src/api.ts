@@ -1,6 +1,6 @@
 import express from 'express';
 import { capture } from '@snapshot-labs/snapshot-sentry';
-import { rpcError } from './helpers/utils';
+import { rpcSuccess, rpcError } from './helpers/utils';
 import { check, reactivate } from './lib/hibernate';
 import { fetchSpace } from './helpers/snapshot';
 import { verifyReactivate } from './helpers/verify';
@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/preview', async (req, res) => {
   try {
-    res.json(await check());
+    rpcSuccess(res, await check());
   } catch (e) {
     capture(e);
     return rpcError(res, 'INTERNAL_ERROR', '');
@@ -25,7 +25,11 @@ router.post('/check', async (req, res) => {
 
   try {
     const result = await check(space);
-    res.json({ hibernate: result.count > 0, reason: Object.keys(result.spaces)[0] });
+    rpcSuccess(
+      res,
+      { hibernate: result.count > 0, reason: Object.keys(result.spaces)[0] },
+      space.id
+    );
   } catch (e) {
     capture(e);
     return rpcError(res, 'INTERNAL_ERROR', '');
@@ -46,7 +50,7 @@ router.post('/reactivate', async (req, res) => {
   }
 
   try {
-    res.json({ result: await reactivate(space) });
+    rpcSuccess(res, await reactivate(space));
   } catch (e) {
     capture(e);
     return rpcError(res, 'INTERNAL_ERROR', '');

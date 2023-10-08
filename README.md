@@ -58,26 +58,29 @@ Send a `POST` request to `/api/preview`
 curl -X POST localhost:3005/api/preview
 ```
 
-Will return for following JSON object
+Will return for following JSON-RPC object
 
 ```json
 {
-  "count":14852,
-  "spaces": {
-    "MISCONFIGURED": [
-      {         
-        "id":"colony3.eth",
-        "proposalsCount":0,
-        "created_at":1681274586,
-        "network":"97",
-        "hibernating":false,
-        "strategies":[{"name":"ticket"}],
-        "voteValidation":{"name":"any"}
-      },
-      ...spaces
-    ],
-    "INACTIVE": [...spaces],
-    "STALE": [...spaces],
+  "jsonrpc":"2.0",
+  "result": {
+    "count":14852,
+    "spaces": {
+      "MISCONFIGURED": [
+        {         
+          "id":"colony3.eth",
+          "proposalsCount":0,
+          "created_at":1681274586,
+          "network":"97",
+          "hibernating":false,
+          "strategies":[{"name":"ticket"}],
+          "voteValidation":{"name":"any"}
+        },
+        ...spaces
+      ],
+      "INACTIVE": [...spaces],
+      "STALE": [...spaces],
+    }
   }
 }
 ```
@@ -99,7 +102,10 @@ curl -X POST localhost:3005/api/reactivate \
 This endpoint will return the following JSON response:
 
 ```json
-{ "result": true }
+{
+  "jsonrpc":"2.0",
+  "result": true 
+}
 ```
 
 `result` will be:
@@ -120,10 +126,16 @@ curl -X POST localhost:3005/api/check \
 
 This endpoint is used by the front-end, to retrieve the reason why a space is marked as hibernating.
 
-This endpoint will return the following JSON response:
+This endpoint will return the following JSON-RPC response:
 
 ```json
-{"hibernate":true,"reason":"MISCONFIGURED"}
+{
+  "jsonrpc":"2.0",
+  "result": {
+    "hibernate":true,
+    "reason":"MISCONFIGURED"
+   }
+}
 ```
 
 ## Linting, typecheck

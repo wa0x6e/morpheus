@@ -3,12 +3,11 @@ import https from 'node:https';
 import type { Response } from 'express';
 
 const ERROR_CODES: Record<string, number> = {
-  'Invalid Request': -32600,
   RECORD_NOT_FOUND: 404,
   UNAUTHORIZED: 401
 };
 
-export function rpcSuccess(res: Response, result: string, id: string | number) {
+export function rpcSuccess(res: Response, result: any, id: string | number = '') {
   res.json({
     jsonrpc: '2.0',
     result,
