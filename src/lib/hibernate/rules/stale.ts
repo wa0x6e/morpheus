@@ -1,3 +1,4 @@
+import { capture } from '@snapshot-labs/snapshot-sentry';
 import { fetchLastProposal, type Space } from '../../../helpers/snapshot';
 
 const OFFSET = 180 * 24 * 60 * 60; // 6 months
@@ -19,6 +20,7 @@ async function lastProposalEndedBefore(space: Space, timestamp: number) {
 
     return !lastProposal || lastProposal.end < timestamp;
   } catch (e: any) {
+    capture(e);
     return false;
   }
 }

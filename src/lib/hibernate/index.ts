@@ -2,6 +2,7 @@ import { RULES, type FilterRule } from './rules';
 import { type Space, fetchSpaces } from '../../helpers/snapshot';
 import { paginate } from '../../helpers/utils';
 import { hibernateSpace, reactivateSpace } from './utils';
+import { capture } from '@snapshot-labs/snapshot-sentry';
 
 type HibernateList = Record<string, Space[]>;
 
@@ -37,12 +38,21 @@ export async function hibernate(spaces?: Space[]) {
   spaces ||= Object.values((await check()).spaces).flat();
 
   for (const space of spaces) {
-    hibernateSpace(space);
+    try {
+      await hibernateSpace(space);
+    } catch (e: any) {
+      capture(e);
+    }
   }
 }
 
 async function fetchAllAwakeSpaces() {
-  const spaces: Space[] = await paginate(fetchSpaces);
+  try {
+    const spaces: Space[] = await paginate(fetchSpaces);
 
-  return spaces.filter(space => !space.hibernating);
+    return spaces.filter(space => !space.hibernating);
+  } catch (e: any) {
+    capture(e.networkError.result);
+    return [];
+  }
 }
