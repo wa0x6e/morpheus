@@ -55,7 +55,7 @@ export type Space = {
 
 const SPACE_QUERY = gql`
   query Spaces($skip: Int, $perPage: Int, $id: String) {
-    spaces(skip: $skip, first: $perPage, id: $id) {
+    spaces(skip: $skip, first: $perPage, where: { id: $id }) {
       id
       proposalsCount
       created_at
