@@ -27,7 +27,6 @@ function withoutProposalValidations(space: Space) {
   return false;
 }
 
-// ticket strategy without validation
 function withTicketStrategyWithoutValidation(space: Space) {
   const hasTicket = space.strategies.some(strategy => strategy.name === 'ticket');
   const hasVotingValidation =
