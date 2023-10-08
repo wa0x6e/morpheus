@@ -99,7 +99,7 @@ curl -X POST localhost:3005/api/reactivate \
 This endpoint will return the following JSON response:
 
 ```json
-{ result: true }
+{ "result": true }
 ```
 
 `result` will be:
