@@ -31,7 +31,7 @@ router.post('/check', async (req, res) => {
   }
 });
 
-router.post('/reactive', async (req, res) => {
+router.post('/reactivate', async (req, res) => {
   const space = await fetchSpace(req.body.id);
 
   if (!space) {
