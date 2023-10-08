@@ -39,7 +39,7 @@ router.post('/reactivate', async (req, res) => {
   }
 
   try {
-    res.json(await reactivate(space));
+    res.json({ result: await reactivate(space) });
   } catch (e) {
     capture(e);
     return rpcError(res, 'INTERNAL_ERROR', '');
