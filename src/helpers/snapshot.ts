@@ -35,12 +35,22 @@ const client = new ApolloClient({
   }
 });
 
+export type Strategy = {
+  name: string;
+};
+
+export type VoteValidation = {
+  name: string;
+};
+
 export type Space = {
   id: string;
   proposalsCount: number;
   created_at: number;
   hibernating: boolean;
   network: number;
+  strategies: Strategy[];
+  voteValidation: VoteValidation;
 };
 
 const SPACE_QUERY = gql`
@@ -51,6 +61,12 @@ const SPACE_QUERY = gql`
       created_at
       network
       hibernating
+      strategies {
+        name
+      }
+      voteValidation {
+        name
+      }
     }
   }
 `;
