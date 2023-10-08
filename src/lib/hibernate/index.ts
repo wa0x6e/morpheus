@@ -29,6 +29,10 @@ export async function check(spaces?: Space[] | Space, rules: FilterRule = RULES)
 }
 
 export async function reactivate(space: Space) {
+  if (!space.hibernating) {
+    return true;
+  }
+
   const result = await check(space, { MISCONFIGURED: RULES['MISCONFIGURED'] });
 
   return result.count > 0 ? false : reactivateSpace(space);
