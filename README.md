@@ -110,12 +110,12 @@ This endpoint will return the following JSON response:
 
 Check if the given space can be marked for hibernation.
 
-Send a `POST` request to `/api/check`, with the space ID in the body
+Send a `POST` request to `/api/check`, with the following signature
 
 ```bash
 curl -X POST localhost:3005/api/check \
 -H "Content-Type: application/json" \
--d '{"id": "[SPACE-ID]"}'
+-d '{ "params": { "id": "[SPACE-ID]", "address": "[SPACE-ADMIN-ADDRESS]", "signature": "0x1234" } }'
 ```
 
 This endpoint is used by the front-end, to retrieve the reason why a space is marked as hibernating.

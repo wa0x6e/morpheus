@@ -3,6 +3,7 @@ import { capture } from '@snapshot-labs/snapshot-sentry';
 import { rpcError } from './helpers/utils';
 import { check, reactivate } from './lib/hibernate';
 import { fetchSpace } from './helpers/snapshot';
+import { verifyReactivate } from './helpers/verify';
 
 const router = express.Router();
 
@@ -32,7 +33,13 @@ router.post('/check', async (req, res) => {
 });
 
 router.post('/reactivate', async (req, res) => {
-  const space = await fetchSpace(req.body.id);
+  const { id, params } = req.body;
+
+  if (!verifyReactivate(params.space, params.address, params.signature)) {
+    return rpcError(res, 'UNAUTHORIZED', id);
+  }
+
+  const space = await fetchSpace(id);
 
   if (!space) {
     return rpcError(res, 'RECORD_NOT_FOUND', '');
