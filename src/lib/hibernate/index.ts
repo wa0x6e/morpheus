@@ -36,14 +36,20 @@ export async function reactivate(space: Space) {
 
 export async function hibernate(spaces?: Space[]) {
   spaces ||= Object.values((await check()).spaces).flat();
+  let successCount = 0;
 
   for (const space of spaces) {
     try {
       await hibernateSpace(space);
+      successCount++;
     } catch (e: any) {
       capture(e);
     }
   }
+  console.log({
+    success: successCount,
+    total: spaces.length
+  });
 }
 
 async function fetchAllAwakeSpaces() {
@@ -52,7 +58,7 @@ async function fetchAllAwakeSpaces() {
 
     return spaces.filter(space => !space.hibernating);
   } catch (e: any) {
-    capture(e.networkError.result);
+    capture(e);
     return [];
   }
 }
