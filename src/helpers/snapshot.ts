@@ -51,6 +51,11 @@ export type Space = {
   network: number;
   strategies: Strategy[];
   voteValidation: VoteValidation;
+  validation: { name: string };
+  filters: {
+    minScore: number;
+    onlyMembers: boolean;
+  };
 };
 
 const SPACE_QUERY = gql`

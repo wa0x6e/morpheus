@@ -27,9 +27,13 @@ function withTestnetNetwork(space: Space) {
   return TESTNETS.includes(space.network);
 }
 
-// don’t have proposal validation / authors only
 function withoutProposalValidations(space: Space) {
-  return false;
+  const hasProposalValidation =
+    (space.validation?.name && space.validation.name !== 'any') ||
+    space.filters?.minScore ||
+    space.filters?.onlyMembers;
+
+  return !hasProposalValidation;
 }
 
 function withTicketStrategyWithoutValidation(space: Space) {
