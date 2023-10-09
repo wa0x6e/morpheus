@@ -1,5 +1,8 @@
 import networks from '@snapshot-labs/snapshot.js/src/networks.json';
 import { type Space } from '../../../helpers/snapshot';
+import { lastProposalEndedBefore, uniqueSpacesById } from './utils';
+
+const OFFSET = 60 * 24 * 60 * 60; // 2 months
 
 const TESTNETS = Object.values(networks)
   .filter((network: any) => network.testnet)
@@ -12,10 +15,12 @@ const FILTERS = [
 ];
 
 export default async function process(spaces: Space[]) {
+  const cutoff = Math.floor(Date.now() / 1e3) - OFFSET;
   const result = FILTERS.flatMap(filter => spaces.filter(filter));
-  const ids = new Set(result.map(space => space.id));
 
-  return result.filter(space => ids.has(space.id));
+  return uniqueSpacesById(result).filter(
+    async space => await lastProposalEndedBefore(space, cutoff)
+  );
 }
 
 function withTestnetNetwork(space: Space) {

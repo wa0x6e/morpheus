@@ -1,5 +1,5 @@
-import { capture } from '@snapshot-labs/snapshot-sentry';
-import { fetchLastProposal, type Space } from '../../../helpers/snapshot';
+import type { Space } from '../../../helpers/snapshot';
+import { lastProposalEndedBefore } from './utils';
 
 const OFFSET = 180 * 24 * 60 * 60; // 6 months
 
@@ -12,15 +12,4 @@ export default async function process(spaces: Space[]) {
   return spaces
     .filter(space => space.created_at < cutoff)
     .filter(async space => await lastProposalEndedBefore(space, cutoff));
-}
-
-async function lastProposalEndedBefore(space: Space, timestamp: number) {
-  try {
-    const lastProposal = await fetchLastProposal(space.id);
-
-    return !lastProposal || lastProposal.end < timestamp;
-  } catch (e: any) {
-    capture(e);
-    return false;
-  }
 }
