@@ -35,12 +35,12 @@ export async function paginate(callback: (page: number, pivot: number) => Promis
   let pivot = 0;
 
   while (true) {
-    const _results = await callback(page, pivot);
+    const _results: any[] = await callback(page, pivot);
     if (_results.length === 0) {
       break;
     }
     results = results.concat(_results);
-    pivot = results[results.length - 1].created_at;
+    pivot = _results[_results.length - 1].created_at;
     page++;
   }
 

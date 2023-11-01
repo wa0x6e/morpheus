@@ -59,9 +59,8 @@ export type Space = {
 };
 
 const SPACE_QUERY = gql`
-  query Spaces($skip: Int, $perPage: Int, $id: String, $pivot: Int) {
+  query Spaces($perPage: Int, $id: String, $pivot: Int) {
     spaces(
-      skip: $skip
       first: $perPage
       where: { id: $id, created_at_gt: $pivot }
       orderBy: "created_at"
@@ -90,7 +89,6 @@ export async function fetchSpaces(page: number, pivot = 0) {
   }: { data: { spaces: Space[] | null } } = await client.query({
     query: SPACE_QUERY,
     variables: {
-      skip: (page - 1) * PER_PAGE,
       perPage: PER_PAGE,
       pivot
     }
