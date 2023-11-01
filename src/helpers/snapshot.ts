@@ -81,7 +81,7 @@ const SPACE_QUERY = gql`
   }
 `;
 
-export async function fetchSpaces(page: number, pivot = 0) {
+export async function fetchSpaces(pivot = 0) {
   const PER_PAGE = 1e3;
 
   const {
