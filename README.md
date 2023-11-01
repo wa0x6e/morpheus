@@ -72,7 +72,7 @@ Will return for following JSON-RPC object
           "proposalsCount":0,
           "created_at":1681274586,
           "network":"97",
-          "hibernating":false,
+          "hibernated":false,
           "strategies":[{"name":"ticket"}],
           "voteValidation":{"name":"any"}
         },

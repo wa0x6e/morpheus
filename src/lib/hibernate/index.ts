@@ -29,7 +29,7 @@ export async function check(spaces?: Space[] | Space, rules: FilterRule = RULES)
 }
 
 export async function reactivate(space: Space) {
-  if (!space.hibernating) {
+  if (!space.hibernated) {
     return true;
   }
 
@@ -60,7 +60,7 @@ async function fetchAllAwakeSpaces() {
   try {
     const spaces: Space[] = await paginate(fetchSpaces);
 
-    return spaces.filter(space => !space.hibernating);
+    return spaces.filter(space => !space.hibernated);
   } catch (e: any) {
     capture(e);
     return [];

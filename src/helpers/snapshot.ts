@@ -47,7 +47,7 @@ export type Space = {
   id: string;
   proposalsCount: number;
   created_at: number;
-  hibernating: boolean;
+  hibernated: boolean;
   network: number;
   strategies: Strategy[];
   voteValidation: VoteValidation;
@@ -65,7 +65,7 @@ const SPACE_QUERY = gql`
       proposalsCount
       created_at
       network
-      hibernating
+      hibernated
       strategies {
         name
       }
