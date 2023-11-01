@@ -7,7 +7,7 @@ import { name, version } from '../package.json';
 import { rpcError } from './helpers/utils';
 import initMetrics from './helpers/metrics';
 import api from './api';
-import scheduleJob from './lib/hibernate/job';
+import scheduleJob from './lib/hibernate/cron';
 
 const app = express();
 const PORT = process.env.PORT || 3005;
