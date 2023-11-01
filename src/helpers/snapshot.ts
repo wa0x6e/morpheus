@@ -59,8 +59,14 @@ export type Space = {
 };
 
 const SPACE_QUERY = gql`
-  query Spaces($skip: Int, $perPage: Int, $id: String) {
-    spaces(skip: $skip, first: $perPage, where: { id: $id }) {
+  query Spaces($skip: Int, $perPage: Int, $id: String, $pivot: Int) {
+    spaces(
+      skip: $skip
+      first: $perPage
+      where: { id: $id, created_at_gt: $pivot }
+      orderBy: "created_at"
+      orderDirection: asc
+    ) {
       id
       proposalsCount
       created_at
@@ -76,7 +82,7 @@ const SPACE_QUERY = gql`
   }
 `;
 
-export async function fetchSpaces(page: number) {
+export async function fetchSpaces(page: number, pivot = 0) {
   const PER_PAGE = 1e3;
 
   const {
@@ -85,7 +91,8 @@ export async function fetchSpaces(page: number) {
     query: SPACE_QUERY,
     variables: {
       skip: (page - 1) * PER_PAGE,
-      perPage: PER_PAGE
+      perPage: PER_PAGE,
+      pivot
     }
   });
 

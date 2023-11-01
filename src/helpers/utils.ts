@@ -29,16 +29,18 @@ export function rpcError(res: Response, e: Error | string, id: string | number) 
   });
 }
 
-export async function paginate(callback: (page: number) => Promise<unknown[]>) {
+export async function paginate(callback: (page: number, pivot: number) => Promise<unknown[]>) {
   let page = 1;
   let results: any = [];
+  let pivot = 0;
 
   while (true) {
-    const _results = await callback(page);
+    const _results = await callback(page, pivot);
     if (_results.length === 0) {
       break;
     }
     results = results.concat(_results);
+    pivot = results[results.length - 1].created_at;
     page++;
   }
 
