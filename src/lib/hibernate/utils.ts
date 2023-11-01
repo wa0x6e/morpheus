@@ -13,7 +13,7 @@ export function reactivateSpace(space: Space) {
 }
 
 async function dispathSequencerAction(action: string, value: string) {
-  const res = await fetchWithKeepAlive(SEQUENCER_API_URL, {
+  const res = await fetchWithKeepAlive(`${SEQUENCER_API_URL}/hibernate`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', secret: SEQUENCER_API_SECRET },
     body: JSON.stringify({
