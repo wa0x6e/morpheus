@@ -40,7 +40,7 @@
   },
   "devDependencies": {
     "@ethersproject/abstract-signer": "^5.7.0",
-    "@snapshot-labs/eslint-config": "^0.1.0-beta.13",
+    "@snapshot-labs/eslint-config": "^0.1.0-beta.14",
     "@snapshot-labs/prettier-config": "^0.1.0-beta.7",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.13",
